@@ -91,7 +91,7 @@ export default function TodoList() {
 
   const generateAIBrief = async (todo: Todo) => {
     try {
-      const res = await fetch('/api/claude/brief', {
+      const res = await fetch('/api/ai/brief', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ todoId: todo._id?.toString() }),
@@ -100,8 +100,8 @@ export default function TodoList() {
 
       // Update todo with brief and thread ID
       await updateTodo(todo._id!.toString(), {
-        claudeBrief: data.brief,
-        claudeThreadId: data.threadId,
+        aiBrief: data.brief,
+        threadId: data.threadId,
       });
     } catch (error) {
       console.error('Error generating AI brief:', error);

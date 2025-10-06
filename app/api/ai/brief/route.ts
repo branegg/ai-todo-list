@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import { getDatabase } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { Todo } from '@/lib/types';
 
-const client = new Anthropic({
+const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
+});
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || '',
 });
 
 export async function POST(req: NextRequest) {
@@ -22,7 +27,7 @@ export async function POST(req: NextRequest) {
     // Create a new conversation thread
     const threadId = new ObjectId().toString();
 
-    // Build context for Claude
+    // Build context for AI
     let prompt = `I need a practical, concise brief on how to accomplish this task:\n\nTitle: ${todo.title}`;
 
     if (todo.description) {
@@ -35,23 +40,44 @@ export async function POST(req: NextRequest) {
 
     prompt += `\n\nProvide a brief, actionable plan (3-5 steps max) on how to accomplish this task. Be practical and concise.`;
 
-    const message = await client.messages.create({
-      model: 'claude-3-5-sonnet-20250929',
-      max_tokens: 1024,
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    });
+    let brief = '';
+    const provider = todo.aiProvider || 'claude';
 
-    const brief = message.content[0].type === 'text' ? message.content[0].text : '';
+    if (provider === 'gpt') {
+      // Use OpenAI
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      });
+
+      brief = response.choices[0]?.message?.content || '';
+    } else {
+      // Use Claude
+      const message = await anthropic.messages.create({
+        model: 'claude-3-5-sonnet-20250929',
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      });
+
+      brief = message.content[0].type === 'text' ? message.content[0].text : '';
+    }
 
     // Store the thread in database
     await db.collection('threads').insertOne({
       _id: new ObjectId(threadId),
       todoId: new ObjectId(todoId),
+      provider,
       messages: [
         { role: 'user', content: prompt },
         { role: 'assistant', content: brief },

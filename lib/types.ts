@@ -10,8 +10,9 @@ export interface Todo {
   reminderDate?: Date;
   urls?: string[];
   aiEnabled: boolean;
-  claudeThreadId?: string;
-  claudeBrief?: string;
+  aiProvider?: 'claude' | 'gpt';
+  threadId?: string;
+  aiBrief?: string;
   createdAt: Date;
   updatedAt: Date;
 }

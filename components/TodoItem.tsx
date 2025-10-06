@@ -107,18 +107,20 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
             </div>
           )}
 
-          {todo.claudeBrief && (
+          {todo.aiBrief && (
             <div>
-              <h4 className="font-medium text-sm mb-1">Claude's Brief:</h4>
+              <h4 className="font-medium text-sm mb-1">
+                AI Brief ({todo.aiProvider === 'gpt' ? 'GPT-4' : 'Claude'}):
+              </h4>
               <p className="text-sm text-gray-700 dark:text-gray-300 bg-purple-50 dark:bg-purple-900/20 p-3 rounded">
-                {todo.claudeBrief}
+                {todo.aiBrief}
               </p>
-              {todo.claudeThreadId && (
+              {todo.threadId && (
                 <button
                   onClick={() => setShowThread(!showThread)}
                   className="mt-2 text-sm text-purple-600 dark:text-purple-400 hover:underline"
                 >
-                  {showThread ? 'Hide' : 'Open'} Claude Thread
+                  {showThread ? 'Hide' : 'Open'} AI Thread
                 </button>
               )}
             </div>
@@ -145,9 +147,9 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
         </div>
       )}
 
-      {showThread && todo.claudeThreadId && (
+      {showThread && todo.threadId && (
         <div className="mt-4 border-t pt-4 dark:border-gray-700">
-          <ClaudeThread todoId={todo._id!.toString()} threadId={todo.claudeThreadId} />
+          <ClaudeThread todoId={todo._id!.toString()} threadId={todo.threadId} />
         </div>
       )}
     </div>

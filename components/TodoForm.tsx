@@ -17,6 +17,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
   const [reminderDate, setReminderDate] = useState('');
   const [urls, setUrls] = useState('');
   const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiProvider, setAiProvider] = useState<'claude' | 'gpt'>('claude');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +38,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
       reminderDate: reminderDate ? new Date(reminderDate) : undefined,
       urls: urlArray,
       aiEnabled,
+      aiProvider: aiEnabled ? aiProvider : undefined,
     });
 
     // Reset form
@@ -48,6 +50,7 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
     setReminderDate('');
     setUrls('');
     setAiEnabled(false);
+    setAiProvider('claude');
     setIsOpen(false);
   };
 
@@ -144,17 +147,46 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
             />
           </div>
 
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="aiEnabled"
-              checked={aiEnabled}
-              onChange={(e) => setAiEnabled(e.target.checked)}
-              className="w-4 h-4 text-blue-600 rounded"
-            />
-            <label htmlFor="aiEnabled" className="ml-2 text-sm font-medium">
-              Enable Claude AI to generate task brief
-            </label>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="aiEnabled"
+                checked={aiEnabled}
+                onChange={(e) => setAiEnabled(e.target.checked)}
+                className="w-4 h-4 text-blue-600 rounded"
+              />
+              <label htmlFor="aiEnabled" className="ml-2 text-sm font-medium">
+                Enable AI to generate task brief
+              </label>
+            </div>
+
+            {aiEnabled && (
+              <div className="ml-6 flex gap-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="aiProvider"
+                    value="claude"
+                    checked={aiProvider === 'claude'}
+                    onChange={(e) => setAiProvider(e.target.value as 'claude' | 'gpt')}
+                    className="w-4 h-4 text-purple-600"
+                  />
+                  <span className="ml-2 text-sm">Claude (Anthropic)</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="aiProvider"
+                    value="gpt"
+                    checked={aiProvider === 'gpt'}
+                    onChange={(e) => setAiProvider(e.target.value as 'claude' | 'gpt')}
+                    className="w-4 h-4 text-green-600"
+                  />
+                  <span className="ml-2 text-sm">GPT-4 (OpenAI)</span>
+                </label>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2">

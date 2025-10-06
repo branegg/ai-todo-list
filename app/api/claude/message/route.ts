@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     // Call Claude
     const response = await client.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
+      model: 'claude-3-5-sonnet-20250929',
       max_tokens: 2048,
       system: `You are a helpful assistant helping with task: "${todo?.title}". Provide practical, concise advice. Keep responses brief and actionable.`,
       messages: messages,

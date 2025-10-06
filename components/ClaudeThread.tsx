@@ -23,7 +23,7 @@ export default function ClaudeThread({ todoId, threadId }: ClaudeThreadProps) {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(`/api/claude/thread/${threadId}`);
+      const res = await fetch(`/api/ai/thread/${threadId}`);
       const data = await res.json();
       setMessages(data.messages || []);
     } catch (error) {
@@ -40,7 +40,7 @@ export default function ClaudeThread({ todoId, threadId }: ClaudeThreadProps) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/claude/message', {
+      const res = await fetch('/api/ai/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ export default function ClaudeThread({ todoId, threadId }: ClaudeThreadProps) {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-      <h3 className="font-semibold mb-3">Claude Conversation</h3>
+      <h3 className="font-semibold mb-3">AI Conversation</h3>
 
       <div className="space-y-3 mb-4 max-h-96 overflow-y-auto">
         {messages.map((msg, idx) => (
@@ -74,7 +74,7 @@ export default function ClaudeThread({ todoId, threadId }: ClaudeThreadProps) {
             }`}
           >
             <p className="text-xs font-medium mb-1">
-              {msg.role === 'user' ? 'You' : 'Claude'}
+              {msg.role === 'user' ? 'You' : 'AI'}
             </p>
             <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
           </div>
@@ -87,7 +87,7 @@ export default function ClaudeThread({ todoId, threadId }: ClaudeThreadProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Ask Claude anything about this task..."
+          placeholder="Ask AI anything about this task..."
           className="flex-1 px-3 py-2 border rounded dark:bg-gray-800 dark:border-gray-700 text-sm"
           disabled={loading}
         />
