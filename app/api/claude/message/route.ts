@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
               { role: 'user', content: message },
               { role: 'assistant', content: assistantMessage },
             ],
-          },
+          } as any,
         },
         $set: { updatedAt: new Date() },
       }
