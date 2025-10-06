@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "ANTHROPIC_API_KEY": "@anthropic_api_key"
+  }
+}
