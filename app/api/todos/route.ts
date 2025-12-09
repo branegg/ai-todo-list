@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       reminderDate: body.reminderDate ? new Date(body.reminderDate) : undefined,
       urls: body.urls || [],
       aiEnabled: body.aiEnabled || false,
+      aiProvider: body.aiProvider,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

@@ -38,10 +38,13 @@ export async function POST(req: NextRequest) {
       prompt += `\nRelated URLs: ${todo.urls.join(', ')}`;
     }
 
-    prompt += `\n\nProvide a brief, actionable plan (3-5 steps max) on how to accomplish this task. Be practical and concise.`;
+    prompt += `\n\nProvide a brief, actionable plan (3-5 steps max) on how to accomplish this task. Be practical and concise. Respond in the same language as the task title and description.`;
 
     let brief = '';
     const provider = todo.aiProvider || 'claude';
+
+    console.log('Todo aiProvider:', todo.aiProvider);
+    console.log('Using provider:', provider);
 
     if (provider === 'gpt') {
       // Use OpenAI

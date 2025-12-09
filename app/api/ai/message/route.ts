@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: 'system',
-            content: `You are a helpful assistant helping with task: "${todo?.title}". Provide practical, concise advice. Keep responses brief and actionable.`,
+            content: `You are a helpful assistant helping with task: "${todo?.title}". Provide practical, concise advice. Keep responses brief and actionable. Always respond in the same language as the user's messages.`,
           },
           ...messages,
         ],
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       const response = await anthropic.messages.create({
         model: 'claude-3-5-sonnet-20250929',
         max_tokens: 2048,
-        system: `You are a helpful assistant helping with task: "${todo?.title}". Provide practical, concise advice. Keep responses brief and actionable.`,
+        system: `You are a helpful assistant helping with task: "${todo?.title}". Provide practical, concise advice. Keep responses brief and actionable. Always respond in the same language as the user's messages.`,
         messages: messages,
       });
 

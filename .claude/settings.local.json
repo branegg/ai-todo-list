@@ -11,7 +11,9 @@
       "Bash(git push:*)",
       "Bash(vercel:*)",
       "Bash(npm uninstall:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(mongosh:*)"
     ],
     "deny": [],
     "ask": []
